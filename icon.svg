@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+<style>
+text {
+    font-size:  16px;
+    text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
+    font-weight: 700;
+    font-family: 'Times New Roman';
+}
+</style>
+<text x="32" y="32" dominant-baseline="middle" text-anchor="middle"><tspan>X ⇄ Y</tspan></text>
+</svg>

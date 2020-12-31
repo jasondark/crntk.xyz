@@ -1,0 +1,109 @@
+<!DOCTYPE html!>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="A suite of tools for analyzing chemical reaction networks from the comfort of your web browser.">
+    <title>The Chemical Reaction Network Toolkit</title>
+    <link rel="icon" href="icon.svg">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Sans:wght@400;700&family=IBM+Plex+Serif&display=swap" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+    <script src="vec.js"      >/* a sparse vector type              */</script>
+    <script src="crntk.js"    >/* basic parsing and stoichiometry   */</script>
+    <script src="nullspace.js">/* finds the basis of the flux modes */</script>
+    <script src="ui.js"       >/* boring stuff to wire up the page  */</script>
+</head>
+<body>
+    <h1><abbr title="Chemical Reaction Network Toolkit">CRNTK</abbr></h1>
+    <nav>
+        <a href="#enter">Define</a> &gt;
+        <a href="#review">Review</a> &gt; [
+        <a href="#claw">Conservation Laws</a> |
+        <a href="#path">Extreme Pathways</a> |
+        <a href="#crnt">Deficiency</a> ]
+    </nav>
+
+    <div>
+        <h2>Overview</h2>
+        <p>The Chemical Reaction Toolkit is a suite of tools written in Javascript that perform basic analysis of chemical reaction networks from the comfort of your web browser, without needing to install any software.</p>
+        <p>At present, the toolkit provides a convenient parser for reaction networks and efficient algorithms for computing the full set of conservation laws.<!-- and extreme pathways in a network. It can additionally report the deficiency of the network, as well as perform some flux balance analysis.</p>
+        <p>In addition, the network and calculations can be exported to various programming environments and file formats:</p>
+        <ul>
+            <li>SBML file</li>
+            <li>Graphviz DOT file</li>
+            <li>Python3/SciPy code</li>
+            <li>Julia/Catalyst.jl code</li>
+        </ul>--></p>
+    </div>
+
+
+    <div id="enter">
+        <h2>Define a Chemical Reaction Network</h2>
+        <form action="javascript://">
+            <textarea wrap="off" placeholder="# Reactions are defined line by line:
+S + E &lt;=&gt; ES
+ES -&gt; P + E
+
+# There are many ways to write an arrow:
+S + E == ES; ES ==&gt; P + E
+# (as you can see, semicolons also act as a newline)
+
+# Reactions can also be &quot;chained&quot;:
+S + E &lt;&lt;&gt;&gt; ES --&gt;&gt; P + E
+
+# The empty complex is 0, e.g. &quot;0 -&gt; S&quot;.
+# Comments are specified by a &quot;#&quot;."></textarea>
+            <input type="button" value="Parse and Review" onclick="parseCRN(this.form.elements[0])"/>
+        </form>
+    </div>
+
+    <div id="review">
+        <h2>Review the Chemical Reaction Network</h2>
+        <p>Please review CRNTK's "understanding" of your chemical reaction network before proceeding.</p>
+        <p>Additionally, you may provide specific names for each reaction: these names will be reflected in the various exported files that are available. (Note that a reversible reaction named "Rxn" will implicitly generate "Rxn_f" and "Rxn_b" in these files, referring to the forward and backward reactions separately.)</p>
+        <form action="javascript://">
+            <table id="crn_review">
+                <thead>
+                    <tr>
+                        <th>Reaction ID</th>
+                        <th colspan="3">Representation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td colspan="4" style="color: var(--nord3);">(Please define your network first.)</td></tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+
+    <div id="claw">
+        <h2>Conservation Laws</h2>
+        <p>Depending on the size of the chemical reaction network, this calculation may take some time. The underlying algorithm is the "double description method" combined with a few tricks that often drastically speed up the calculation.</p>
+        <form action="javascript://">
+            <textarea wrap="off" placeholder="Please initiate the calculation with the buttons below."></textarea>
+            <input type="button" value="Start Calculation" onclick="startClaws(this.form.elements[0])" />
+            <input type="button" value="Abort Calculation" onclick="stopClaws(this.form.elements[0])" />
+        </form>
+    </div>
+
+    <div id="path">
+        <h2>Extreme Pathways</h2>
+        <p>coming soon...</p>
+        <!--
+        <p>Depending on the size of the chemical reaction network, this calculation may take some time. The underlying algorithm is the "double description method" combined with a few tricks that often drastically speed up the calculation.</p>
+        <form action="javascript://">
+            <textarea placeholder="Please initiate the calculation with the buttons below."></textarea>
+            <input type="button" value="Start Calculation" onclick="startPaths(this.form.elements[0])" />
+            <input type="button" value="Abort Calculation" onclick="stopPaths(this.form.elements[0])" />
+        </form>
+        -->
+    </div>
+
+    <div id="crnt">
+        <h2>Deficiency Theory</h2>
+        <p>coming soon...</p>
+    </div>
+
+
+</body>
+</html>
