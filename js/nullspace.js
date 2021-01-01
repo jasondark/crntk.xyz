@@ -1,5 +1,29 @@
 "use strict";
 
+// Copyright 2021 Dr. Jason Dark (https://crntk.xyz)
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// 1. Redistributions of source code must retain the above copyright notice,
+//    this list of conditions and the following disclaimer.
+//
+// 2. Redistributions in binary form must reproduce the above copyright notice,
+//    this list of conditions and the following disclaimer in the documentation
+//    and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+
 (function() {
     function swap(rows, i, j) {
         const r = rows[i];
@@ -27,7 +51,7 @@
             // 1) Find the pivot
             let bestPivot = Number.POSITIVE_INFINITY;
             let bestIndex = -1;
-            for (let k = i; k < m; i++) {
+            for (let k = i; k < m; k++) {
                 const entry = rows[k][0];
                 if (entry[0] === j) {
                     const pivot = Math.abs(entry[1]);
@@ -66,12 +90,13 @@
 
         // Now we grab the nullspace basis
         const matrix = [];
-        for (let k = rows.length - 1; k >= 0; k--) {
-            if (rows[k][0][0] >= n) {
-                matrix.push(rows[k]);
-                for (const entry of rows[k]) {
+        while (rows.length > 0) {
+            const row = rows.pop();
+            if (row[0][0] >= n) {
+                for (const entry of row) {
                     entry[0] -= n;
                 }
+                matrix.push(row);
             } else {
                 break;
             }

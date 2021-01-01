@@ -46,7 +46,7 @@ nav > a {
     text-decoration: none;
     color: var(--nord6);
     background-color: var(--nord2);
-    font-size: small;
+    font-size: x-small;
 }
 nav > a:hover {
     text-decoration: underline;
@@ -82,18 +82,27 @@ input[type="text"] {
     border: 1px solid var(--nord2);
 }
 
-#review th {
-    padding: 0 2em 0 0;
+#crn_stats {
+    margin-bottom: 1em;
 }
-#review td:nth-child(2) {
-    text-align: right;
-}
-#review td:nth-child(3) {
+
+#crn_stats th, #crn_stats td {
+    padding: 0 0.5em;
     text-align: center;
 }
-#review td:nth-child(4) {
+
+#crn_review th {
+    padding: 0 2em 0 0;
+}
+#crn_review td:nth-child(2) {
+    text-align: right;
+}
+#crn_review td:nth-child(3) {
+    text-align: center;
+}
+#crn_review td:nth-child(4) {
     text-align: left;
 }
-#review input[type="text"] {
+#crn_review input[type="text"] {
     width: 6em;
 }

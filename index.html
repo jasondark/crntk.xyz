@@ -10,6 +10,7 @@
     <link href="/css/style.css" rel="stylesheet">
     <script src="/js/vec.js"      >/* a sparse vector type              */</script>
     <script src="/js/crntk.js"    >/* basic parsing and stoichiometry   */</script>
+    <script src="/js/linkage.js"  >/* some basic graph theory           */</script>
     <script src="/js/nullspace.js">/* finds the basis of the flux modes */</script>
     <script src="/js/ui.js"       >/* boring stuff to wire up the page  */</script>
 </head>
@@ -47,7 +48,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         <a href="#review">Review</a> &gt; [
         <a href="#claw">Conservation Laws</a> |
         <a href="#path">Extreme Pathways</a> |
-        <a href="#crnt">Deficiency</a> ]
+        <a href="#flux">Flux Balance Analysis</a> ]
     </nav>
 
     <div>
@@ -89,6 +90,22 @@ S + E &lt;&lt;&gt;&gt; ES --&gt;&gt; P + E
         <p>Please review CRNTK's "understanding" of your chemical reaction network before proceeding.</p>
         <p>Additionally, you may provide specific names for each reaction: these names will be reflected in the various exported files that are available. (Note that a reversible reaction named "Rxn" will implicitly generate "Rxn_f" and "Rxn_b" in these files, referring to the forward and backward reactions separately.)</p>
         <form action="javascript://">
+            <table id="crn_stats">
+                <thead>
+                    <tr>
+                        <th>Species</th>
+                        <th>Complexes</th>
+                        <th>Reactions</th>
+                        <th>Rank</th>
+                        <th>Linkages</th>
+                        <th>Reversible</th>
+                        <th>Deficiency</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td colspan="7" style="color: var(--nord3);">(Please define your network first.)</td></tr>
+                </tbody>
+            </table>
             <table id="crn_review">
                 <thead>
                     <tr>
@@ -126,11 +143,10 @@ S + E &lt;&lt;&gt;&gt; ES --&gt;&gt; P + E
         -->
     </div>
 
-    <div id="crnt">
-        <h2>Deficiency Theory</h2>
+    <div id="flux">
+        <h2>Flux Balance Analysis</h2>
         <p>coming soon...</p>
     </div>
-
 
 </body>
 </html>

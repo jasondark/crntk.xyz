@@ -47,6 +47,15 @@ const CRNTK = (function() {
             }
         }
     };
+    Object.defineProperty(PairSet.prototype, 'size', {
+        get: function() {
+            let size = 0;
+            for (const set of this.lookup.values()) {
+                size += set.size;
+            }
+            return size;
+        }
+    });
 
     function parseComplex(complex, speciesSet, complexes) {
         // 1) Parse the complex
@@ -55,9 +64,7 @@ const CRNTK = (function() {
             const match = /\s*(\d*)\s*\*?\s*(\S+)\s*/.exec(atom);
             // if we only match a number, it should just be zero
             if (match[1] && !match[2]) {
-                if (match[1] !== '0') {
-                    throw new Error('unable to parse: ' + atom);
-                }
+                throw new Error('unable to parse: ' + atom);
             } else {
                 // try to match the optional multiplier
                 const mult = match[1] ? parseInt(match[1], 10) : 1;
@@ -67,6 +74,9 @@ const CRNTK = (function() {
                 // if the multiplier is 0, just ignore the pair
                 if (mult > 0) {
                     const species = match[2];
+                    if (species === '0') {
+                        continue;
+                    }
                     speciesSet.add(species)
                     parsed.set(species, (parsed.has(species) ? parsed.get(species) : 0) + mult)
                 }
@@ -98,6 +108,9 @@ const CRNTK = (function() {
             for (let chain of line.split('#', 1)[0].split(';')) {
                 // split on (and remember) the arrows
                 const atoms = chain.split(/(<[<=-]*[>=-]*>|<[<=-]*|[>=-]*>|=+)/g);
+                if (atoms.length === 1) {
+                    continue;
+                }
 
                 // we initialize the iteration with the first complex
                 let rhs = parseComplex(atoms[0], this.species, this.complexes)[0];

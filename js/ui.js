@@ -31,44 +31,85 @@ function parseCRN(textarea) {
     activeNetwork = new CRNTK(textarea.value);
 
     // trigger the review
-    reviewCRN(document.getElementById("crn_review"));
+    reviewCRN(document.getElementById("crn_stats"), document.getElementById("crn_review"));
     document.links[1].click();
 }
 
-function reviewCRN(table) {
-    const section = table.tBodies[0];
-    while (section.hasChildNodes()) {
-        section.removeChild(section.lastChild);
-    }
-
-    const complexes = new Array(activeNetwork.complexes.size);
-    for (const [complex, [index, _]] of activeNetwork.complexes.entries()) {
-        complexes[index] = complex.replace(/\b1\*/g, '');
-    }
-
-    let k = 0;
-    for (const [i, j] of activeNetwork.reactions) {
-        const reversible = activeNetwork.reactions.has(j, i);
-
-        // be smart about reversible reactions
-        if (j < i && reversible) {
-            continue;
+function reviewCRN(stats, review) {
+    (function() {
+        const section = stats.tBodies[0];
+        while (section.hasChildNodes()) {
+            section.removeChild(section.lastChild);
         }
 
-        k += 1;
         const row = section.insertRow(-1);
 
-        const name = row.insertCell(-1).appendChild(document.createElement("input"));
-        name.type = "text";
-        name.value = "R" + k;
-        name.setAttribute('data-lhs', i);
-        name.setAttribute('data-rhs', j);
-        name.setAttribute('data-rev', 1 * reversible);
-        row.insertCell(-1).appendChild(document.createTextNode(complexes[i]));
-        row.insertCell(-1).appendChild(document.createTextNode(reversible ? '⇄' : '→'))
-        row.insertCell(-1).appendChild(document.createTextNode(complexes[j]));
-    }
-};
+        // species
+        row.insertCell(-1).appendChild(document.createTextNode(activeNetwork.species.size))
+
+        // complexes
+        row.insertCell(-1).appendChild(document.createTextNode(activeNetwork.complexes.size))
+
+        // reactions
+        row.insertCell(-1).appendChild(document.createTextNode(activeNetwork.reactions.size))
+
+        // rank
+        const basis = activeNetwork.nullspace();
+        const rank = activeNetwork.reactions.size - basis.length;
+        row.insertCell(-1).appendChild(document.createTextNode(rank))
+
+        // linkages
+        const linkages = activeNetwork.linkages();
+        row.insertCell(-1).appendChild(document.createTextNode(linkages.length));
+
+        // reversible
+        const reversible = ['No', 'Weakly', 'Yes'][linkages.reduce((acc, x) => Math.min(acc, x.type), Number.POSITIVE_INFINITY)];
+        row.insertCell(-1).appendChild(document.createTextNode(reversible));
+
+        // deficiency
+        const deficiency = activeNetwork.complexes.size - linkages.length - rank;
+        row.insertCell(-1).appendChild(document.createTextNode(deficiency));
+    })();
+
+    (function() {
+        const section = review.tBodies[0];
+        while (section.hasChildNodes()) {
+            section.removeChild(section.lastChild);
+        }
+    
+        const complexes = new Array(activeNetwork.complexes.size);
+        for (const [complex, [index, canonical]] of activeNetwork.complexes.entries()) {
+            if (canonical.length === 0) {
+                complexes[index] = '∅';
+            } else {
+                complexes[index] = complex.replace(/\b1\*/g, '');
+            }
+        }
+    
+        let k = 0;
+        for (const [i, j] of activeNetwork.reactions) {
+            const reversible = activeNetwork.reactions.has(j, i);
+    
+            // be smart about reversible reactions
+            if (j < i && reversible) {
+                continue;
+            }
+    
+            k += 1;
+            const row = section.insertRow(-1);
+    
+            const name = row.insertCell(-1).appendChild(document.createElement("input"));
+            name.type = "text";
+            name.value = "R" + k;
+            name.setAttribute('data-lhs', i);
+            name.setAttribute('data-rhs', j);
+            name.setAttribute('data-rev', 1 * reversible);
+            row.insertCell(-1).appendChild(document.createTextNode(complexes[i]));
+            row.insertCell(-1).appendChild(document.createTextNode(reversible ? '⇄' : '→'))
+            row.insertCell(-1).appendChild(document.createTextNode(complexes[j]));
+        }
+    })();
+}
 
 
 let clawWorker = null;
@@ -117,4 +158,8 @@ function stopPaths(textarea) {
         pathWorker.terminate();
         textarea.value = 'Aborted calculation!';
     }
+}
+
+function deficiency(textarea) {
+
 }
