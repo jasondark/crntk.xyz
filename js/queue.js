@@ -56,10 +56,14 @@ const Queue = (function() {
         if (this.front === null) {
             return defaultValue;
         } else {
-            const response = this.front.value;
-            this.front = this.front.next;
+            const response = this.front.value;            
+            if (this.front === this.back) {
+                this.front = this.back = null;
+            } else {
+                this.front = this.front.next;
+            }
             this.length -= 1;
-            return response;
+            return response;            
         }
     };
 
