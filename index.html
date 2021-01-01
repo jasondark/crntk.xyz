@@ -1,5 +1,18 @@
 <!DOCTYPE html!>
 <html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="A suite of tools for analyzing chemical reaction networks from the comfort of your web browser.">
+    <title>The Chemical Reaction Network Toolkit</title>
+    <link rel="icon" href="icon.svg">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Sans:wght@400;700&family=IBM+Plex+Serif&display=swap" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <script src="/js/vec.js"      >/* a sparse vector type              */</script>
+    <script src="/js/crntk.js"    >/* basic parsing and stoichiometry   */</script>
+    <script src="/js/nullspace.js">/* finds the basis of the flux modes */</script>
+    <script src="/js/ui.js"       >/* boring stuff to wire up the page  */</script>
+</head>
 <!--
 BSD 2-Clause License
 
@@ -27,19 +40,6 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
-<head>
-    <meta charset="utf-8">
-    <meta name="description" content="A suite of tools for analyzing chemical reaction networks from the comfort of your web browser.">
-    <title>The Chemical Reaction Network Toolkit</title>
-    <link rel="icon" href="icon.svg">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Sans:wght@400;700&family=IBM+Plex+Serif&display=swap" rel="stylesheet">
-    <link href="style.css" rel="stylesheet">
-    <script src="vec.js"      >/* a sparse vector type              */</script>
-    <script src="crntk.js"    >/* basic parsing and stoichiometry   */</script>
-    <script src="nullspace.js">/* finds the basis of the flux modes */</script>
-    <script src="ui.js"       >/* boring stuff to wire up the page  */</script>
-</head>
 <body>
     <h1><abbr title="Chemical Reaction Network Toolkit">CRNTK</abbr></h1>
     <nav>

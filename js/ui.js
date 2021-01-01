@@ -77,7 +77,7 @@ function startClaws(textarea) {
         stopClaws(textarea);
     }
     const {rows, cols} = activeNetwork.stoichiometry();
-    clawWorker = new Worker('claws.js');
+    clawWorker = new Worker('/js/claws.js');
     clawWorker.onmessage = function(e) {
         const [kind, msg] = e.data;
         if (kind === 'progress') {
@@ -106,7 +106,7 @@ function startPaths(textarea) {
         stopPaths(textarea);
     }
     const {rows, cols} = activeNetwork.stoichiometry();
-    pathWorker = new Worker('claws.js');
+    pathWorker = new Worker('/js/claws.js');
     pathWorker.onmessage = function(e) {
         textarea.value = e.data + ' remaining of ' + rows.length;
     }
