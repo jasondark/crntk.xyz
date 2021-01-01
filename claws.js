@@ -1,12 +1,12 @@
 "use strict";
 
-importScripts('vec.js', 'deque.js');
+importScripts('vec.js', 'queue.js');
 
 function ddm(constraints, n, progress, complete) {
-    const A = new Deque(constraints);
-    const R = new Deque();
+    const A = new Queue(constraints);
+    const R = new Queue();
     for (let i = 0; i < n; i++) {
-        R.pushRight([[i, 1]]);
+        R.enqueue([[i, 1]]);
     }
 
     while (A.length > 0) {
@@ -18,14 +18,14 @@ function ddm(constraints, n, progress, complete) {
         progress(maxIterations);
 
         for (; count < maxIterations; count++) {
-            const a = A.popLeft();
+            const a = A.dequeue(null);
             let [delta, trivial] = process(a, R, false);
             if (trivial) {
                 continue;
             } else if (delta <= 0) {
                 break;
             } else {
-                A.pushRight(a);
+                A.enqueue(a);
                 if (delta < bestDelta) {
                     bestDelta = delta;
                     bestConstraint = a;
@@ -52,14 +52,14 @@ function process(a, R, force) {
     const rpos = [];
 
     for (let i = 0; i < n0; i++) {
-        const r = R.popLeft()
-        const v = SparseVector.dot(r, a)
+        const r = R.dequeue(null);
+        const v = SparseVector.dot(r, a);
         if (v < 0) {
             rneg.push([r, v]);
         } else if (v > 0) {
             rpos.push([r, v]);
         } else {
-            R.pushRight(r);
+            R.enqueue(r);
         }
     }
 
@@ -71,14 +71,14 @@ function process(a, R, force) {
                 const z = SparseVector.axpy(-ydot, x, xdot, y)
                 SparseVector.deflate(z);
                 if (adjacent(z, R)) {
-                    R.pushRight(z);
+                    R.enqueue(z);
                 }
             }
         }
     } else {
         for (let arr of [rneg, rpos]) {
             for (let [r, _] of arr) {
-                R.pushRight(r);
+                R.enqueue(r);
             }
         }
     }
